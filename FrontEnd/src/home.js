@@ -10,12 +10,12 @@ function Home() {
     const [detalle, setDetalle] = useState(null);
 
     useEffect(() => {
-        axios.get('http://localhost:3000/vehiculos', {
+        axios.get('http://localhost:3000/vehiculos/misVehiculos', {
             mode:'GET',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + localStorage.getItem('jwt')
-            }
+            }  
         })
         .then(function (response) {
             setData(response.data);
@@ -44,7 +44,7 @@ function Home() {
                     <div id="container">
                         <a href="#" onClick={() =>mostrarDetalles(vehiculo)} >
                             <p id="texto">{vehiculo.placa}</p>
-                            <img id="placa" src="/placa.png" alt="placa" /> 
+                            <img id="placaMisVehiculos" src="/placa.png" alt="placa" /> 
                         </a>
                     </div>
                 </li>

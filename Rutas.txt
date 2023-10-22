@@ -1,0 +1,17 @@
+Rutas API
+
+Usuarios y Autenticación Rol -> User/Admin
+/auth/register ... Creacion de usuarios /// Metodo -> Post
+/auth/login ... Login /// Metodo -> Post
+/auth/profile ... informacion del perfil del usuario /// Metodo -> Get
+
+Recurso Vehículos Rol -> User/Admin
+/vehiculos/register ... registrar vehiculos /// Metodo -> Post
+/vehiculos/misVehiculos ... Lista los vehiculos registrados por ese usuario /// Metodo -> Get
+/vehiculos/$placaVehiculo ... encuentra el vehiculos por placa /// Metodo -> Get
+/vehiculos/$placaVehiculo ... retorna vehiculo por placa para ser editado /// Metodo -> Patch
+/vehiculos/$placaVehiculo ... Elimina vehiculo con placa /// Metodo -> Delete
+
+Recurso Parqueadero Rol -> Admin
+/parqueadero/ingreso ... ingresa un vehiculo al parqueadero /// Metodo -> Post
+/parqueadero/salida ... saca un vehiculo del parqueadero /// Metodo -> Post

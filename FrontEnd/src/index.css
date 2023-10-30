@@ -3,7 +3,8 @@ html, body {
   height: 100%;
   margin: 0;
   padding: 0;
-  overflow: hidden; /* Para ocultar la barra de desplazamiento cuando no sea necesario */
+  color: #ffffff;
+  background-image: radial-gradient(circle, #000000, #020101, #040203, #050306, #060408, #06040a, #06050d, #06050f, #060412, #070414, #070316, #080218);
 }
 
 body {
@@ -13,10 +14,7 @@ body {
   font-family: 'Roboto', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-image: radial-gradient(circle, #000000, #020101, #040203, #050306, #060408, #06040a, #06050d, #06050f, #060412, #070414, #070316, #080218);
-  color: #ffffff;
   transition: all 0.1s;
-
 }
 
 code {
@@ -24,6 +22,12 @@ code {
     monospace;
   font-family: 'Roboto', sans-serif;
 }
+
+
+/* Input{
+  font-size: 17px !important;
+} */
+
 
   @tailwind base;
   @tailwind components;

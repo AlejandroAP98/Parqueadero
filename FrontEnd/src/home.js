@@ -10,7 +10,7 @@ function Home() {
     const [detalle, setDetalle] = useState(null);
 
     useEffect(() => {
-        axios.get('http://localhost:3000/vehiculos/misVehiculos', {
+        axios.get('http://192.168.1.4:3000/vehiculos/misVehiculos', {
             mode:'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -44,7 +44,7 @@ function Home() {
                     <div id="container">
                         <a href="#" onClick={() =>mostrarDetalles(vehiculo)} >
                             <p id="texto">{vehiculo.placa}</p>
-                            <img id="placaMisVehiculos" src="/placa.png" alt="placa" /> 
+                            <img id="placaMisVehiculos" src="/placa.png" alt="placa" className='rounded-3xl' /> 
                         </a>
                     </div>
                 </li>
@@ -55,9 +55,6 @@ function Home() {
                 onRequestClose={cerrarModal}
                 className= " fixed top-0 left-0 right-0 z-50 p-4  overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full"
                 overlayClassName="fixed inset-0 bg-gray-700 bg-opacity-75 transition-opacity"
-                
-
-                
             >
                 {
                     detalle && (

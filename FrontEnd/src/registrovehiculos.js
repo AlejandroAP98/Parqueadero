@@ -52,19 +52,9 @@ function RegistroVehiculo(){
                     },
                 };
             
-            const res = await axios.post('http://localhost:3000/vehiculos/register', vehiculos, config);
+            const res = await axios.post('http://192.168.1.4:3000/vehiculos/register', vehiculos, config);
                 console.log(res);
-                setVehiculos({
-                    tipoVehiculo:'',
-                    placa: '',
-                    marca: '',
-                    color: '',
-                    modelo: ''
-                });
-                setInputValue(''); // Limpia el primer campo de entrada
-                setInputValue2(''); // Limpia el segundo campo de entrada
-                setInputValue3(''); // Limpia el tercer campo de entrada
-                setInputValue4(''); // Limpia el cuarto campo de entrada
+                handleClear();
                 window.location.href = '/';
             
             }else{
@@ -83,7 +73,6 @@ function RegistroVehiculo(){
                 [name]: value.toUpperCase(),
             
             }));
-            console.log("placa o modelo");
         } else {
             setVehiculos((prevData) => ({
                 ...prevData,
@@ -114,94 +103,84 @@ function RegistroVehiculo(){
                 <div className="grid justify-center grid-flow-col-dense mx-4 md:grid-cols-12 lg:grid-cols-12 my-6">
                     <div className="w-full md:col-start-4 md:col-span-6 lg:col-start-5 lg:col-span-4">
                         <div className='flex flex-col gap-y-6 my-4'>
-                            <div className="flex w-full flex-wrap md:flex-nowrap gap-4">
-                                <Select 
-                                    label="Tipo de vehículo"
-                                    variant='bordered'
-                                    autoComplete='off'
-                                    size='lg' 
-                                    className="max-w-xl"
-                                    labelPlacement='outside'
-                                    name='tipoVehiculo'
-                                    id='tipoVehiculo'
-                                    isRequired
-                                    onChange={handleInputChange}  
-                                >
-                                    {tiposVehiculo.map((vehiculos) => (
-                                    <SelectItem key={vehiculos.value} value={vehiculos.value} className='text-black'>
-                                        {vehiculos.label}
-                                    </SelectItem>
-                                    ))}
-                                </Select>
-                            </div>
-                            <div className="flex w-full flex-wrap md:flex-nowrap gap-4">
-                                <Input
-                                    type="text" 
-                                    label="Placa"
-                                    size='lg'
-                                    variant='bordered'
-                                    className="max-w-xl"
-                                    labelPlacement='outside'
-                                    required 
-                                    name='placa'
-                                    autoComplete='off' 
-                                    isRequired
-                                    value={inputValue} 
-                                    onInput={handleInput}
-                                    onChange={handleInputChange}
-                                />
-                            </div>
-                            <div className="flex w-full flex-wrap md:flex-nowrap gap-4">
-                                <Input 
-                                    type="text" 
-                                    label="Marca"
-                                    variant='bordered'
-                                    size='lg'
-                                    className="max-x-xl"
-                                    labelPlacement='outside'
-                                    name='marca'
-                                    id='marca'
-                                    autoComplete='off'
-                                    isRequired
-                                    value={inputValue2} 
-                                    onInput={handleInput2} 
-                                    onChange={handleInputChange}
-                                />
-                            </div>
-                            <div className="flex w-full flex-wrap md:flex-nowrap gap-4">
-                                <Input 
-                                    type="text" 
-                                    label="Color"
-                                    size='lg'
-                                    variant='bordered'
-                                    className="max-w-xl"
-                                    labelPlacement='outside'
-                                    name='color'
-                                    id='color'
-                                    autoComplete='off'
-                                    isRequired
-                                    value={inputValue3}
-                                    onInput={handleInput3} 
-                                    onChange={handleInputChange}
-                                />
-                            </div>
-                            <div className="flex w-full flex-wrap md:flex-nowrap gap-4">
-                                <Input 
-                                    type="text" 
-                                    label="Modelo"
-                                    size='lg'
-                                    variant='bordered'
-                                    isRequired
-                                    className="max-w-xl"
-                                    labelPlacement='outside'
-                                    name='modelo'
-                                    id='modelo'
-                                    autoComplete='off'
-                                    value={inputValue4}
-                                    onInput={handleInput4}
-                                    onChange={handleInputChange}
-                                />
-                            </div>
+                            <Select 
+                                label="Tipo de vehículo"
+                                variant='bordered'
+                                autoComplete='off'
+                                size='lg' 
+                                className="max-w-xl"
+                                labelPlacement='outside'
+                                name='tipoVehiculo'
+                                id='tipoVehiculo'
+                                isRequired
+                                onChange={handleInputChange}  
+                            >
+                                {tiposVehiculo.map((vehiculos) => (
+                                <SelectItem key={vehiculos.value} value={vehiculos.value} className='text-black'>
+                                    {vehiculos.label}
+                                </SelectItem>
+                                ))}
+                            </Select>
+                            <Input
+                                type="text" 
+                                label="Placa"
+                                size='lg'
+                                variant='bordered'
+                                className="max-w-xl"
+                                labelPlacement='outside'
+                                required 
+                                name='placa'
+                                autoComplete='off' 
+                                isRequired
+                                value={inputValue} 
+                                onInput={handleInput}
+                                onChange={handleInputChange}
+                            />
+                            <Input 
+                                type="text" 
+                                label="Marca"
+                                variant='bordered'
+                                size='lg'
+                                className="max-x-xl"
+                                labelPlacement='outside'
+                                name='marca'
+                                id='marca'
+                                autoComplete='off'
+                                isRequired
+                                value={inputValue2} 
+                                onInput={handleInput2} 
+                                onChange={handleInputChange}
+                            />
+                            <Input 
+                                type="text" 
+                                label="Color"
+                                size='lg'
+                                variant='bordered'
+                                className="max-w-xl"
+                                labelPlacement='outside'
+                                name='color'
+                                id='color'
+                                autoComplete='off'
+                                isRequired
+                                value={inputValue3}
+                                onInput={handleInput3} 
+                                onChange={handleInputChange}
+                            />
+                            <Input 
+                                type="text" 
+                                label="Modelo"
+                                size='lg'
+                                variant='bordered'
+                                isRequired
+                                className="max-w-xl"
+                                labelPlacement='outside'
+                                name='modelo'
+                                id='modelo'
+                                autoComplete='off'
+                                value={inputValue4}
+                                onInput={handleInput4}
+                                onChange={handleInputChange}
+                            />
                         </div>
                         <div className='flex justify-between my-6'>
                             <Button 

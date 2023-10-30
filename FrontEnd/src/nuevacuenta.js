@@ -16,7 +16,7 @@ function CrearCuenta(){
         e.preventDefault();
         
         try {
-            const res = await axios.post('http://localhost:3000/auth/register', user);
+            const res = await axios.post('http://192.168.1.4:3000/auth/register', user);
                 console.log(res);
                 setUser({
                     name:'',
@@ -39,11 +39,6 @@ function CrearCuenta(){
         }));
     };
 
-    const handleTouchEvent = (e) => {
-        handleInputChange(e);
-        handleSubmit(e);
-   
-    }
     return(
         <div className="flex h-full flex-col justify-center px-6 py-12 lg:px-8'">
             <div className="sm:mx-auto sm:w-full sm:max-w-sm">
@@ -52,61 +47,52 @@ function CrearCuenta(){
             </div>
             <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
                 <form onSubmit={handleSubmit} className="space-y-6">
-                    <div className="flex w-full flex-wrap md:flex-nowrap gap-4">
-                        <Input
-                            type="text"
-                            label="Nombre"
-                            variant='bordered'
-                            className="max-w-xl"
-                            labelPlacement='outside'
-                            isRequired
-                            name='name'
-                            id='name'
-                            autoComplete='name'
-                            onChange={handleInputChange}
-                        />
-                    </div>
-                    <div className="flex w-full flex-wrap md:flex-nowrap gap-4">
-                        <Input
-                            type="email" 
-                            label="Correo electrónico"	
-                            variant='bordered'
-                            className="max-w-xl"
-                            labelPlacement='outside'
-                            required 
-                            name='email'
-                            id='email'
-                            autoComplete='email' 
-                            isRequired
-                            onChange={handleInputChange}
-                        />
-                    </div>
-                    <div className="flex w-full flex-wrap md:flex-nowrap gap-4">
-                        <Input
-                            type="password"
-                            label="Contraseña"
-                            variant='bordered'
-                            className="max-w-xl"
-                            labelPlacement='outside'
-                            isRequired
-                            name='password'
-                            id='password'
-                            autoComplete='current-password'
-                            onChange={handleInputChange}
-                        />
-                    </div>
-                    <div>
-                        <Button 
-                            type="submit" 
-                            color="success" 
-                            size="large" 
-                            variant="ghost"
-                            className="w-full"
-                            onTouchStart={handleTouchEvent}
-                            >
-                            Crear cuenta
-                        </Button>
-                    </div>
+                <Input
+                    type="text"
+                    label="Nombre"
+                    variant='bordered'
+                    className="max-w-xl"
+                    labelPlacement='outside'
+                    isRequired
+                    name='name'
+                    id='name'
+                    autoComplete='name'
+                    onChange={handleInputChange}
+                />
+                    <Input
+                        type="email" 
+                        label="Correo electrónico"	
+                        variant='bordered'
+                        className="max-w-xl"
+                        labelPlacement='outside'
+                        required 
+                        name='email'
+                        id='email'
+                        autoComplete='email' 
+                        isRequired
+                        onChange={handleInputChange}
+                    />
+                    <Input
+                        type="password"
+                        label="Contraseña"
+                        variant='bordered'
+                        className="max-w-xl"
+                        labelPlacement='outside'
+                        isRequired
+                        name='password'
+                        id='password'
+                        autoComplete='current-password'
+                        onChange={handleInputChange}
+                    />
+                    <Button 
+                        type="submit" 
+                        color="success" 
+                        size="large" 
+                        variant="ghost"
+                        className="w-full"
+                        >
+                        Crear cuenta
+                    </Button>
                 </form>
                 <p className="mt-10 text-center text-sm text-gray-500">
                     Ya tienes cuenta?

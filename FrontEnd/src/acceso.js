@@ -1,90 +1,276 @@
 import { useState } from 'react';
-function Acceso(){
-    const [placa, setPlaca] = useState('');
+import { Input } from  '@nextui-org/react';
+import { Button } from '@nextui-org/react';
+import {Select, SelectItem} from "@nextui-org/react";
+import {Divider} from "@nextui-org/react";
+import axios from 'axios';
 
-    const handlePlacaChange =(e) => {
-        setPlaca(e.target.value);
+function Acceso(){
+    const [placa, setInputPlaca] = useState ("");
+    const [marca, setInputMarca] = useState ("");
+    const [modelo, setInputModelo] = useState ("");
+    const [color, setInputColor] = useState ("");
+    const [propietario, setInputPropietario] = useState ("");
+
+
+    const [vehiculos, setVehiculos] = useState({
+        tipoVehiculo:'',
+        placa: '',
+        marca: '',
+        color: '',
+        modelo: '',
+        propietario: ''
+    });
+
+    const tiposVehiculo = [
+        {label: "Moto", value: 'Moto'},
+        {label: "Carro", value: 'Carro'},
+
+    ]
+    const handleInputModelo = (e) => {
+        const text= e.target.value;
+        setInputModelo(text)
     }
+
+    const handleInputPropietario = (e) => {
+        const text= e.target.value;
+        setInputPropietario(text)
+    }
+
+    const handleInputPlaca = (e) => {
+        const text = e.target.value.toUpperCase();
+        setInputPlaca(text);
+    };
+
+    const handleInputMarca = (e) => {
+        const text = e.target.value.toUpperCase();
+        setInputMarca(text);
+    
+    };
+
+    const handleInputColor = (e) => {
+        const text = e.target.value;
+        setInputColor(text);
+    }
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        if (name === "placa" || name === "marca") {
+            setVehiculos((prevData) => ({
+                ...prevData,
+                [name]: value.toUpperCase(),
+            
+            }));
+        } else {
+            setVehiculos((prevData) => ({
+                ...prevData,
+                [name]: value,
+            }));
+        }
+    }
+
+    const handleSubmit= async (e) => {
+        e.preventDefault();
+        try {
+            const token = localStorage.getItem('jwt');
+            console.log(token);
+            if(token){
+                const config = {
+                    headers: { 
+                        Authorization: `Bearer ${token}`,
+                    },
+                };
+            
+            const res = await axios.post('http://192.168.1.4:3000/vehiculos/register', vehiculos, config);
+                console.log(res);
+                setVehiculos({
+                    tipoVehiculo:'',
+                    placa: '',
+                    marca: '',
+                    color: '',
+                    modelo: ''
+                });
+                window.location.href = '/';
+            
+            }else{
+                console.log('No hay token');
+            } 
+        }catch (error) {
+            console.log(error);
+        }
+    };
+
+    const handleClear = () => {
+        setVehiculos({
+          tipoVehiculo: '',
+          placa: '',
+          marca: '',
+          color: '',
+          modelo: ''
+        });
+        setInputColor("");
+        setInputMarca("");
+        setInputModelo("");
+        setInputPlaca("");
+        setInputPropietario("")
+
+    }
+
     return(
-        <div className="flex lg:flex-row flex-col  ">
-            <div className="lg:order-1 order-2" >
-                <h1 className='text-4xl font-bold text-center m-3'> Registrar vehículo</h1>
-                <form method="post"  id="htmlForm" name="htmlForm">
-                    <div className=" mx-4 my-4">
-                        <div className="w-full">
-                            <div className="grid w-full grid-cols-1 ">
-                                <div className="Form-group my-2">
-                                    <label htmlFor="tipoVehiculo">Tipo</label>
-                                    <select className="htmlForm-control block w-full rounded-md border-0  text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset" defaultValue="Automovil" id="tipoVehiculo" required name="tipoVehiculo">
-                                        <option>Seleccione un tipo</option>
-                                        <option value="Automovil">Automovil</option>
-                                        <option value="Motocicleta">Motocicleta</option>
-                                        <option value="Bicicleta">Bicicleta</option>
-                                    </select>
-                                </div>
-                                <div className="Form-group">
-                                    <label htmlFor="placa">Placa</label>
-                                    <input type="text" className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset"  name="placa" required placeholder="Placa del vehículo"/>
-                                </div>
-                                <div className="Form-group">
-                                    <label htmlFor="marca">Marca</label>
-                                    <input type="text"  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset"  name="marca" required placeholder="Marca del vehículo"/>
-                                </div>
-                                <div className="Form-group">
-                                    <label htmlFor="color">Color</label>
-                                    <input type="text"  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset"  name="color" required placeholder="Color del vehículo"/>
-                                </div>
-                                <div className="Form-group">
-                                    <label htmlFor="modelo">Modelo</label>
-                                    <input type="text"  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset"  name="modelo" required placeholder="Modelo del vehículo"/>
-                                </div>
-                            </div>
-                            <div className="flex justify-center md:gap-10 lg:gap-10">
-                                <button type="submit" id="guardar" value="enviar" className="transition ease-in-out delay-100 hover:-translate-y-1 hover:scale-110 relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white dark:text-white ">
-                                    <span className="text-white relative px-5 py-2.5 transition-all ease-in duration-75 bg-gray-900 dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
-                                        Guardar
-                                    </span>
-                                </button>
-                                <button className="transition ease-in-out delay-100 hover:-translate-y-1 hover:scale-110 relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-pink-500 to-orange-400 group-hover:from-pink-500 group-hover:to-orange-400 hover:text-white dark:text-white">
-                                    <span className=" text-white relative px-5 py-2.5 transition-all ease-in duration-75  bg-gray-900 dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
-                                        Cancelar
-                                    </span>
-                                </button>
-                            </div>
-                        </div> 
+        <div className="flex justify-center lg:flex-row flex-col gap-x-4 ">
+            <div className="lg:order-1 order-2 h-full ">
+                <h1 className='text-4xl font-bold text-cente'> Registrar vehículo</h1>
+                <Divider/> 
+                <form method="post"  id="htmlForm" name="htmlForm" className='grid gap-y-6 my-5'>
+                    <Select 
+                        label="Tipo de vehículo"
+                        variant='bordered'
+                        autoComplete='off'
+                        size='lg' 
+                        className="max-w-xl"
+                        labelPlacement='outside'
+                        name='tipoVehiculo'
+                        id='tipoVehiculo'
+                        isRequired
+                        onChange={handleInputChange}  
+                    >
+                        {tiposVehiculo.map((vehiculos) => (
+                        <SelectItem key={vehiculos.value} value={vehiculos.value} className='text-black'>
+                            {vehiculos.label}
+                        </SelectItem>
+                        ))}
+                    </Select>
+                    <Input
+                        type="text"
+                        label="Placa"
+                        variant='bordered'
+                        className="max-w-xl"
+                        labelPlacement='outside'
+                        isRequired
+                        name='placa'
+                        id='placa'
+                        autoComplete='placa'
+                        value={placa}
+                        maxLength={6}
+                        onInput={handleInputPlaca}
+                        onChange={handleInputChange}
+                    />
+                    <Input
+                        type="text"
+                        label="Marca"
+                        variant='bordered'
+                        className="max-w-xl"
+                        labelPlacement='outside'
+                        isRequired
+                        name='marca'
+                        id='marca'
+                        autoComplete='marca'
+                        value={marca}
+                        onInput={handleInputMarca}
+                        onChange={handleInputChange}
+                    />
+                    <Input
+                        type="text"
+                        label="Color"
+                        variant='bordered'
+                        className="max-w-xl"
+                        labelPlacement='outside'
+                        isRequired
+                        name='color'
+                        id='color'
+                        autoComplete='color'
+                        value={color}
+                        onInput={handleInputColor}
+                        onChange={handleInputChange}
+                    />
+                    <Input
+                        type="text"
+                        label="Modelo"
+                        variant='bordered'
+                        className="max-w-xl"
+                        labelPlacement='outside'
+                        isRequired
+                        name='modelo'
+                        id='modelo'
+                        autoComplete='modelo'
+                        value={modelo}
+                        onInput={handleInputModelo}
+                        onChange={handleInputChange}
+                    />
+                    <Input
+                        type="text"
+                        label="Propietario"
+                        variant='bordered'
+                        className="max-w-xl"
+                        labelPlacement='outside'
+                        isRequired
+                        name='propietario'
+                        id='propietario'
+                        autoComplete='propietario'
+                        value={propietario}
+                        onInput={handleInputPropietario}
+                        onChange={handleInputChange}
+                    />
+                    <div className='flex justify-between gap-x-10'>    
+                        <Button type="submit"
+                            color="success"
+                            size="large"
+                            variant="ghost"
+                            className="w-full"
+                            onClick={handleSubmit}
+                        >
+                            Guardar
+                        </Button>
+                        <Button 
+                            color="error"
+                            size="large"
+                            variant="ghost"
+                            className="w-full"
+                            onClick={handleClear}
+                        >
+                            Limpiar
+                        </Button>
                     </div>
                 </form>
-            </div>    
-            <div className="flex flex-col order-1 lg:order-2 justify-items-center mx-5">
-                <img src="/placa.png" alt="placa" id="imgAcceso"/>
+            </div>
+            <div className="grid lg:mx-10 justify-items-center content-center order-1 lg:order-2 ">
+                
                 <input
                     type="text"
                     name="placa"
                     id="inputPlaca"
-                    placeholder="Ingrese placa"
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset"
+                    autocomplete="off"
                     required
+                    maxLength={6}
                     value={placa}
-                    onChange={handlePlacaChange}
-                    />
-                <div className="flex justify-center my-2 md:gap-10 lg:gap-10">
-                  <button type="submit" id="guardar" value="enviar" className="transition ease-in-out delay-100 hover:-translate-y-1 hover:scale-110 relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white dark:text-white ">
-                        <span className="text-white relative px-5 py-2.5 transition-all ease-in duration-75 bg-gray-900 dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
-                            Guardar
-                        </span>
-                    </button>
-                    <button className="transition ease-in-out delay-100 hover:-translate-y-1 hover:scale-110 relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-pink-500 to-orange-400 group-hover:from-pink-500 group-hover:to-orange-400 hover:text-white dark:text-white">
-                        <span className=" text-white relative px-5 py-2.5 transition-all ease-in duration-75  bg-gray-900 dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
-                            Cancelar
-                        </span>
-                    </button>
+                    onInput={handleInputPlaca}
+                    className='custom-background w-full max-w-xl md:h-72 h-52 lg:h-72 text-8xl lg:text-9xl text-center'
+                    onChange={handleInputChange}
+                    
+                />
+                <div className="flex my-4 w-full gap-14">
+                    <Button type="submit"
+                        color="success"
+                        size="large"
+                        variant="ghost"
+                        className="w-full"
+                    >
+                        Ingreso
+                    </Button>
+                    <Button 
+                        color="danger"
+                        size="large"
+                        variant="ghost"
+                        className="w-full"
+                    >
+                        Salida
+                    </Button>
                 </div>
             </div>
-            <div className="order-3 text-center bg-white">
+            <div className=" order-3 h-full text-center">
                 <h1 className='text-4xl font-bold text-center m-3'> Ocupación</h1>
-            </div>
-            
-           
+
+            </div> 
         </div>
     )
 }

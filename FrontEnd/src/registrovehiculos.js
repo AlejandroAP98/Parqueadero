@@ -4,6 +4,7 @@ import axios from 'axios';
 import {Select, SelectItem} from "@nextui-org/react";
 import {Input} from "@nextui-org/react";
 import { Button } from '@nextui-org/react';
+import { API_BASE_URL, VEHICULO_REGISTER } from './services/apiServices';
 
 function RegistroVehiculo(){
     const [inputValue, setInputValue] = useState('');
@@ -52,7 +53,7 @@ function RegistroVehiculo(){
                     },
                 };
             
-            const res = await axios.post('http://192.168.1.4:3000/vehiculos/register', vehiculos, config);
+            const res = await axios.post(`${API_BASE_URL}${VEHICULO_REGISTER}`, vehiculos, config);
                 console.log(res);
                 handleClear();
                 window.location.href = '/';

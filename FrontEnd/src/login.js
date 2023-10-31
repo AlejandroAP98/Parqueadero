@@ -3,6 +3,7 @@ import React, { useState} from 'react';
 import './Login.css'
 import { Button } from '@nextui-org/react';
 import { Input } from '@nextui-org/react';
+import { API_BASE_URL, LOGIN } from './services/apiServices';
 
 function Login(){
     const [user, setUser] = useState({
@@ -11,9 +12,10 @@ function Login(){
     });
     
     const handleSubmit= async (e) => {
+        
         e.preventDefault();
         try {
-            const res = await axios.post('http://192.168.1.4:3000/auth/login',user);
+            const res = await axios.post(`${API_BASE_URL}${LOGIN}`,user);
                 setUser({
                     email: '',
                     password: ''

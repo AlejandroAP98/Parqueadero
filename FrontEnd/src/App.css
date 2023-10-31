@@ -60,7 +60,7 @@
   transform: translate(-50%, -50%);
   color: black;
   font-weight: bold;
-  font-size: 98px; 
+  font-size: 90px; 
   font-family: monospace;
   position: absolute;
   white-space: nowrap; 
@@ -70,7 +70,7 @@ input.custom-background {
   background-image: url('/public/placa.png'); /* Imagen de fondo */
   background-size: cover;
   background-repeat: no-repeat;
-  color: black;   
+  color: black;
   font-family: monospace;
   white-space: nowrap;
   text-align: center;

@@ -2,7 +2,7 @@ import React, { useState} from 'react';
 import axios from 'axios';
 import { Input } from  '@nextui-org/react';
 import { Button } from '@nextui-org/react';
-
+import { API_BASE_URL, REGISTER } from './services/apiServices';
 
 
 function CrearCuenta(){
@@ -16,14 +16,13 @@ function CrearCuenta(){
         e.preventDefault();
         
         try {
-            const res = await axios.post('http://192.168.1.4:3000/auth/register', user);
+            const res = await axios.post(`${API_BASE_URL}${REGISTER}`, user);
                 console.log(res);
                 setUser({
                     name:'',
                     email: '',
                     password: ''
                 });
-                
                 window.location.href = '/login';
 
             } catch (error) {

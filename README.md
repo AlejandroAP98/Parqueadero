@@ -1,1 +1,3 @@
-# Parqueadero
+##Easyparking
+Se propone la implementación de un sistema de información integral que permita gestionar de manera eficiente el ingreso y salida de vehículos al campus. A través de un aplicativo web, los usuarios podrán registrar sus vehículos y los administradores del sistema podran gestiónar el ingreso y salida del campus. El sistema permitirá almacenar datos y generar reportes.
+Mediante esta solución tecnológica, se busca optimizar el control de acceso vehicular al campus, proporcionando a una herramienta eficiente y segura. De igual forma, se espera reducir los tiempos de espera y mejorar la experiencia #de los usuarios al ingresar y salir del campus.

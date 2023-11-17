@@ -15,3 +15,5 @@ Recurso Vehículos Rol -> User/Admin
 Recurso Parqueadero Rol -> Admin
 /parqueadero/ingreso ... ingresa un vehiculo al parqueadero /// Metodo -> Post
 /parqueadero/salida ... saca un vehiculo del parqueadero /// Metodo -> Post
+
+Finalizado

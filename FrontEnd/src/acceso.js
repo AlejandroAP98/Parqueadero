@@ -4,6 +4,7 @@ import { Button } from '@nextui-org/react';
 import {Select, SelectItem} from "@nextui-org/react";
 import {Divider} from "@nextui-org/react";
 import axios from 'axios';
+import {API_BASE_URL, INGRESO, SALIDA} from './services/apiServices';
 
 function Acceso(){
     const [placa, setInputPlaca] = useState ("");
@@ -11,7 +12,11 @@ function Acceso(){
     const [modelo, setInputModelo] = useState ("");
     const [color, setInputColor] = useState ("");
     const [propietario, setInputPropietario] = useState ("");
+    const [placaVehiculoReg, setPlacaReg] = useState ("");
 
+    const[registro, setRegistro] = useState({
+        placaVehiculoReg: ''
+    });
 
     const [vehiculos, setVehiculos] = useState({
         tipoVehiculo:'',
@@ -53,6 +58,7 @@ function Acceso(){
         setInputColor(text);
     }
 
+
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         if (name === "placa" || name === "marca") {
@@ -68,6 +74,19 @@ function Acceso(){
             }));
         }
     }
+
+    const handleInputPlacaVehiculoReg = (e) => {
+        const text = e.target.value.toUpperCase();
+        setPlacaReg(text);
+    };
+
+    const handlePlacaRegChange = (e) => {
+        const { name, value } = e.target;
+        setRegistro((prevData) => ({
+            ...prevData,
+            [name]: value.toUpperCase(),
+        }));
+    };
 
     const handleSubmit= async (e) => {
         e.preventDefault();
@@ -115,6 +134,59 @@ function Acceso(){
         setInputPropietario("")
 
     }
+
+    const handleIngreso = async (e) => {
+        e.preventDefault();
+        try {
+            const token = localStorage.getItem('jwt');
+            console.log(token);
+            if(token){
+                const config = {
+                    headers: { 
+                        Authorization: `Bearer ${token}`,
+                    },
+                };
+            const res = await axios.post(`${API_BASE_URL}${INGRESO}`, registro, config);
+                console.log(res);
+                setRegistro({
+                    placaVehiculoReg: '',
+                });
+                console.log(res.data);
+            }else{
+                console.log('No hay token');
+            }
+        }
+        catch (error) {
+            console.log(error);
+        }
+    };
+
+    const handleSalida = async (e) => {
+        e.preventDefault();
+        try {
+            const token = localStorage.getItem('jwt');
+            console.log(token);
+            if(token){
+                const config = {
+                    headers: { 
+                        Authorization: `Bearer ${token}`,
+                    },
+                };
+            
+            const res = await axios.post(`${API_BASE_URL}${SALIDA}`, registro, config);
+                console.log(res);
+                setRegistro({
+                    placaVehiculoReg: '',
+                });
+                console.log(res.data);
+            }else{
+                console.log('No hay token');
+            }
+        }
+        catch (error) {
+            console.log(error);
+        }
+    };
 
     return(
         <div className="flex justify-center lg:flex-row flex-col gap-x-4 ">
@@ -237,16 +309,15 @@ function Acceso(){
                 
                 <input
                     type="text"
-                    name="placa"
+                    name="placaVehiculoReg"
                     id="inputPlaca"
-                    autocomplete="off"
+                    autoComplete="off"
                     required
                     maxLength={6}
-                    value={placa}
-                    onInput={handleInputPlaca}
+                    value={placaVehiculoReg}
+                    onInput={handleInputPlacaVehiculoReg}
                     className='custom-background w-full max-w-xl md:h-72 h-52 lg:h-72 text-8xl lg:text-9xl text-center'
-                    onChange={handleInputChange}
-                    
+                    onChange={handlePlacaRegChange}
                 />
                 <div className="flex my-4 w-full gap-14">
                     <Button type="submit"
@@ -254,6 +325,7 @@ function Acceso(){
                         size="large"
                         variant="ghost"
                         className="w-full"
+                        onClick={handleIngreso}
                     >
                         Ingreso
                     </Button>
@@ -262,6 +334,7 @@ function Acceso(){
                         size="large"
                         variant="ghost"
                         className="w-full"
+                        onClick={handleSalida}
                     >
                         Salida
                     </Button>

@@ -5,6 +5,9 @@ import {Select, SelectItem} from "@nextui-org/react";
 import {Divider} from "@nextui-org/react";
 import axios from 'axios';
 import {API_BASE_URL, INGRESO, SALIDA} from './services/apiServices';
+import GraficaMotos from './components/GraficaMotos';
+import GraficaCarros from './components/GraficaCarros';
+
 
 function Acceso(){
     const [placa, setInputPlaca] = useState ("");
@@ -13,11 +16,19 @@ function Acceso(){
     const [color, setInputColor] = useState ("");
     const [propietario, setInputPropietario] = useState ("");
     const [placaVehiculoReg, setPlacaReg] = useState ("");
+    const [motos, setMotos] = useState ({
+        mensaje: '',
+        porcentajeOcupacion: 0
+    });
+
+    const [carros, setCarros] = useState ({
+        mensaje: '',
+        porcentajeOcupacion: 0
+    });
 
     const[registro, setRegistro] = useState({
         placaVehiculoReg: ''
     });
-
     const [vehiculos, setVehiculos] = useState({
         tipoVehiculo:'',
         placa: '',
@@ -26,12 +37,11 @@ function Acceso(){
         modelo: '',
         propietario: ''
     });
-
     const tiposVehiculo = [
         {label: "Moto", value: 'Moto'},
         {label: "Carro", value: 'Carro'},
-
     ]
+
     const handleInputModelo = (e) => {
         const text= e.target.value;
         setInputModelo(text)
@@ -87,7 +97,7 @@ function Acceso(){
             [name]: value.toUpperCase(),
         }));
     };
-
+    // pendiente de completar ----------------------------------------------------------------------------
     const handleSubmit= async (e) => {
         e.preventDefault();
         try {
@@ -100,7 +110,7 @@ function Acceso(){
                     },
                 };
             
-            const res = await axios.post('http://192.168.1.4:3000/vehiculos/register', vehiculos, config);
+            const res = await axios.post(`${API_BASE_URL}${INGRESO}` , vehiculos, config);
                 console.log(res);
                 setVehiculos({
                     tipoVehiculo:'',
@@ -109,7 +119,6 @@ function Acceso(){
                     color: '',
                     modelo: ''
                 });
-                window.location.href = '/';
             
             }else{
                 console.log('No hay token');
@@ -139,7 +148,6 @@ function Acceso(){
         e.preventDefault();
         try {
             const token = localStorage.getItem('jwt');
-            console.log(token);
             if(token){
                 const config = {
                     headers: { 
@@ -147,14 +155,22 @@ function Acceso(){
                     },
                 };
             const res = await axios.post(`${API_BASE_URL}${INGRESO}`, registro, config);
-                console.log(res);
+                const size = placaVehiculoReg.length;
+                if(parseInt(placaVehiculoReg.charAt(size - 1))){
+                    setCarros(res.data);
+                }
+                else{
+                    setMotos(res.data);
+                }
                 setRegistro({
                     placaVehiculoReg: '',
                 });
-                console.log(res.data);
+                // limpiar valores del input
+                setPlacaReg("");
             }else{
                 console.log('No hay token');
             }
+            
         }
         catch (error) {
             console.log(error);
@@ -165,7 +181,6 @@ function Acceso(){
         e.preventDefault();
         try {
             const token = localStorage.getItem('jwt');
-            console.log(token);
             if(token){
                 const config = {
                     headers: { 
@@ -174,11 +189,18 @@ function Acceso(){
                 };
             
             const res = await axios.post(`${API_BASE_URL}${SALIDA}`, registro, config);
-                console.log(res);
+                const size = placaVehiculoReg.length;
+                if(parseInt(placaVehiculoReg.charAt(size - 1))){
+                    setCarros(res.data);
+                }
+                else{
+                    setMotos(res.data);
+                }
                 setRegistro({
                     placaVehiculoReg: '',
                 });
-                console.log(res.data);
+                setPlacaReg("");
+
             }else{
                 console.log('No hay token');
             }
@@ -190,8 +212,8 @@ function Acceso(){
 
     return(
         <div className="flex justify-center lg:flex-row flex-col gap-x-4 ">
-            <div className="lg:order-1 order-2 h-full ">
-                <h1 className='text-4xl font-bold text-cente'> Registrar vehículo</h1>
+            <div className="md:items-center sm:items-center lg:order-1 order-2 h-full  ">
+                <h1 className='text-3xl font-bold text-center'> Registrar vehículo</h1>
                 <Divider/> 
                 <form method="post"  id="htmlForm" name="htmlForm" className='grid gap-y-6 my-5'>
                     <Select 
@@ -306,7 +328,6 @@ function Acceso(){
                 </form>
             </div>
             <div className="grid lg:mx-10 justify-items-center content-center order-1 lg:order-2 ">
-                
                 <input
                     type="text"
                     name="placaVehiculoReg"
@@ -340,10 +361,13 @@ function Acceso(){
                     </Button>
                 </div>
             </div>
-            <div className=" order-3 h-full text-center">
-                <h1 className='text-4xl font-bold text-center m-3'> Ocupación</h1>
-
-            </div> 
+            <div className=" order-3 flex text-center flex-col lg:w-72 w-full">
+                <h1 className='text-3xl font-bold m-3'> Ocupación</h1>
+                <div className='flex lg:flex-col justify-center lg:items-center'>
+                    <GraficaMotos dataMotos={motos.porcentajeOcupacion}/>
+                    <GraficaCarros dataCarros={carros.porcentajeOcupacion}/>
+                </div>
+            </div>
         </div>
     )
 }

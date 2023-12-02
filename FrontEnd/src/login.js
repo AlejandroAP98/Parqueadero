@@ -20,11 +20,11 @@ function Login(){
                     email: '',
                     password: ''
                 });
-                localStorage.setItem('jwt', res.data.token); 
-                window.location.href = '/';
+                localStorage.setItem('jwt', res.data.token);
+                sessionStorage.setItem('user', res.data.nombre); 
+                window.location.href = '/inicio';
             } catch (error) {
                 alert(console.log(error));
-                
             }
     };
     

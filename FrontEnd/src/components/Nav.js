@@ -2,21 +2,24 @@ import React from "react";
 import { Navbar, NavbarBrand, NavbarContent, NavbarItem, Link, NavbarMenuToggle, NavbarMenu, NavbarMenuItem } from "@nextui-org/react";
 import { useLocation } from 'react-router-dom';
 
+
 function Barra() {
   const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
-  const hideHeader = location.pathname === '/login' || location.pathname === '/nuevaCuenta';
+  const hideHeader = location.pathname === '/login' || location.pathname === '/nuevaCuenta' || location.pathname === '/';
+  const nombreUser = sessionStorage.getItem('user');
   if (hideHeader) {
       return null; 
   }
   const menuItems = [
     { text: "Perfil", path: "/perfil" },
-    { text: "Mis vehículos", path: "/" },
+    { text: "Mis vehículos", path: "/inicio" },
     { text: "Agregar", path: "/registroVehiculo" },
     { text: "Salir", path: "/login" },
   ];
 
   return (
+    <div>
     <Navbar onMenuOpenChange={setIsMenuOpen} className=" bg-black">
       <NavbarContent >
         <NavbarMenuToggle 
@@ -24,9 +27,9 @@ function Barra() {
           className="sm:hidden"
         />
         <NavbarBrand>
-        <a href="/" className="flex items-center gap-1">
-              <img src="/icono.png" id="logo"  alt="Easyparking logo" />
-              <p className="font-bold text-inherit ">EasyParking</p>
+          <a href="/" className="flex items-center gap-1">
+            <img src="/icono.png" id="logo"  alt="Easyparking logo" />
+            <p className="font-bold text-inherit ">EasyParking</p>
           </a>
         </NavbarBrand>
       </NavbarContent>
@@ -34,10 +37,10 @@ function Barra() {
         <NavbarItem className="md:flex sm:flex lg:flex hidden">
           <Link href="/" className=" text-white hover:text-purple-300 gap-1 text-lg">
             <svg className="icon icon-tabler icon-tabler-car" width="24" height="24" viewBox="0 0 24 24" strokeWidth="1" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
-                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                <path d="M7 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path>
-                <path d="M17 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path>
-                <path d="M5 17h-2v-6l2 -5h9l4 5h1a2 2 0 0 1 2 2v4h-2m-4 0h-6m-6 -6h15m-6 0v-5"></path>
+              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+              <path d="M7 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path>
+              <path d="M17 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path>
+              <path d="M5 17h-2v-6l2 -5h9l4 5h1a2 2 0 0 1 2 2v4h-2m-4 0h-6m-6 -6h15m-6 0v-5"></path>
             </svg>
             Mis vehículos 
           </Link>
@@ -45,11 +48,11 @@ function Barra() {
         <NavbarItem className="md:flex sm:flex lg:flex hidden">
           <Link href="/registrovehiculo" className=" text-white hover:text-purple-300 gap-1 text-lg">
             <svg className="icon icon-tabler icon-tabler-pencil-plus" width="24" height="24" viewBox="0 0 24 24" strokeWidth="1" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
-                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4"></path>
-                <path d="M13.5 6.5l4 4"></path>
-                <path d="M16 19h6"></path>
-                <path d="M19 16v6"></path>
+              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+              <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4"></path>
+              <path d="M13.5 6.5l4 4"></path>
+              <path d="M16 19h6"></path>
+              <path d="M19 16v6"></path>
             </svg>
             Agregar
           </Link>
@@ -94,6 +97,11 @@ function Barra() {
         ))}
       </NavbarMenu>
     </Navbar>
+    <p className="text-white text-center">
+      Hola, {nombreUser}
+    </p>
+    </div>
+    
   );
 }
 

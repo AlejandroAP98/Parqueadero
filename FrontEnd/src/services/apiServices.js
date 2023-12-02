@@ -6,4 +6,5 @@ export const LOGIN = '/auth/login'
 export const REGISTER = '/auth/register'
 export const INGRESO =  '/parqueadero/ingreso'
 export const SALIDA = '/parqueadero/salida'
+export const CRUD = '/vehiculos/'
 

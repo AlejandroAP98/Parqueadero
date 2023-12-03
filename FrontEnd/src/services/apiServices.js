@@ -7,4 +7,6 @@ export const REGISTER = '/auth/register'
 export const INGRESO =  '/parqueadero/ingreso'
 export const SALIDA = '/parqueadero/salida'
 export const CRUD = '/vehiculos/'
+export const INVITADOSMOTO = '/parqueadero-motos/invitado'
+export const INVITADOSCARRO = '/parqueadero-carros/invitado'
 

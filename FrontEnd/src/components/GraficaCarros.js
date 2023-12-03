@@ -19,7 +19,7 @@ export default function GraficaCarros (datos) {
         labels: ["Carros","Libre" ],
         datasets: [
             {
-            data: [ carros, 100],
+            data: [ carros, 30],
             label: "Carros",
             backgroundColor: ["orange","black"],
             borderColor: ["white", "white"],

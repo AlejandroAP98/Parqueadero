@@ -4,7 +4,7 @@ import { Button } from '@nextui-org/react';
 import {Select, SelectItem} from "@nextui-org/react";
 import {Divider} from "@nextui-org/react";
 import axios from 'axios';
-import {API_BASE_URL, INGRESO, SALIDA} from './services/apiServices';
+import {API_BASE_URL, INGRESO, SALIDA, INVITADOSCARRO, INVITADOSMOTO} from './services/apiServices';
 import GraficaMotos from './components/GraficaMotos';
 import GraficaCarros from './components/GraficaCarros';
 
@@ -18,12 +18,12 @@ function Acceso(){
     const [placaVehiculoReg, setPlacaReg] = useState ("");
     const [motos, setMotos] = useState ({
         mensaje: '',
-        porcentajeOcupacion: 0
+        cantidadVehiculos: 0
     });
-
+    
     const [carros, setCarros] = useState ({
         mensaje: '',
-        porcentajeOcupacion: 0
+        cantidadVehiculos: 0
     });
 
     const[registro, setRegistro] = useState({
@@ -97,6 +97,11 @@ function Acceso(){
             [name]: value.toUpperCase(),
         }));
     };
+
+    const [invitados, setInvitados] = useState({
+        placaVehiculoReg: '',
+        tipoVehiculoReg: ''
+    });
     // pendiente de completar ----------------------------------------------------------------------------
     const handleSubmit= async (e) => {
         e.preventDefault();
@@ -109,9 +114,14 @@ function Acceso(){
                         Authorization: `Bearer ${token}`,
                     },
                 };
-            
-            const res = await axios.post(`${API_BASE_URL}${INGRESO}` , vehiculos, config);
-                console.log(res);
+            setInvitados({
+                placaVehiculoReg: vehiculos.placa,
+                tipoVehiculoReg: vehiculos.tipoVehiculo
+            });
+            console.log(invitados);
+            if (invitados.tipoVehiculoReg === "Moto") {
+                const res = await axios.post(`${API_BASE_URL}${INVITADOSMOTO}` , invitados, config);
+                setMotos(res.data);
                 setVehiculos({
                     tipoVehiculo:'',
                     placa: '',
@@ -119,7 +129,29 @@ function Acceso(){
                     color: '',
                     modelo: ''
                 });
-            
+                setInvitados({
+                    placaVehiculoReg: '',
+                    tipoVehiculoReg: ''
+                });
+                handleClear();
+                console.log(res);
+            }else{
+                const res = await axios.post(`${API_BASE_URL}${INVITADOSCARRO}`, invitados, config);
+                setCarros(res.data);
+                setVehiculos({
+                    tipoVehiculo:'',
+                    placa: '',
+                    marca: '',
+                    color: '',
+                    modelo: ''
+                });
+                setInvitados({
+                    placaVehiculoReg: '',
+                    tipoVehiculoReg: ''
+                });
+                handleClear();
+                console.log(res);
+            }
             }else{
                 console.log('No hay token');
             } 
@@ -187,9 +219,9 @@ function Acceso(){
                         Authorization: `Bearer ${token}`,
                     },
                 };
-            
             const res = await axios.post(`${API_BASE_URL}${SALIDA}`, registro, config);
                 const size = placaVehiculoReg.length;
+
                 if(parseInt(placaVehiculoReg.charAt(size - 1))){
                     setCarros(res.data);
                 }
@@ -364,8 +396,8 @@ function Acceso(){
             <div className=" order-3 flex text-center flex-col lg:w-72 w-full">
                 <h1 className='text-3xl font-bold m-3'> Ocupación</h1>
                 <div className='flex lg:flex-col justify-center lg:items-center'>
-                    <GraficaMotos dataMotos={motos.porcentajeOcupacion}/>
-                    <GraficaCarros dataCarros={carros.porcentajeOcupacion}/>
+                    <GraficaMotos dataMotos={motos.cantidadVehiculos}/>
+                    <GraficaCarros dataCarros={carros.cantidadVehiculos}/>
                 </div>
             </div>
         </div>

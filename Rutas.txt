@@ -13,5 +13,5 @@ Recurso Vehículos Rol -> User/Admin
 /vehiculos/$placaVehiculo ... Elimina vehiculo con placa /// Metodo -> Delete
 
 Recurso Parqueadero Rol -> Admin
-/parqueadero/ingreso ... ingresa un vehiculo al parqueadero /// Metodo -> Post
-/parqueadero/salida ... saca un vehiculo del parqueadero /// Metodo -> Post
+/parqueadero/ingreso ... ingresa un vehiculo al parqueadero /// Metodo -> Post retorna mensaje "ingreso exitoso" y %ocupacion
+/parqueadero/salida ... saca un vehiculo del parqueadero /// Metodo -> Post 
